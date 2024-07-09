@@ -1,0 +1,14 @@
+[project]
+name = "pre_cfg_comfy_nodes_for_comfyui"
+description = "A set of nodes to prepare the noise predictions before the CFG function"
+version = "1.0.0"
+license = "LICENSE"
+
+[project.urls]
+Repository = "https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "pre_cfg_comfy_nodes_for_ComfyUI"
+Icon = ""
