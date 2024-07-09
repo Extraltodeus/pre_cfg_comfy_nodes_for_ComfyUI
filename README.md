@@ -2,15 +2,15 @@
 
 A set of nodes to prepare the noise predictions before the CFG function
 
-All can be chained and should be highly compatible with everything.
+All can be chained and should be highly compatible with most things.
 
-The order matters depending on your needs.
+The order matters and depends on your needs.
 
-The best chaining order is to be determined by your own preferences.
+The best chaining order is therefore to be determined by your own preferences.
 
 They can be used multiple times in the same workflow!
 
-All are to be used like any model patching node, best right after the model loader.
+All are to be used like any model patching node, right after the model loader.
 
 # Nodes:
 
