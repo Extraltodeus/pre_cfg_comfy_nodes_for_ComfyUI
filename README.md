@@ -76,4 +76,4 @@ Did you know that my first activity is to write model merging functions?
 
 While the code is too much of a mess to be shared, I do expose my shared models on this [gallery](https://github.com/Extraltodeus/shared_models_galleries)!
 
-Also.. Ironically none of these are compatible with my repository [Automatic-CFG](https://github.com/Extraltodeus/ComfyUI-AutomaticCFG) as it replaces what makes these nodes possible. Hence the auto-cfg node here :)
+Also.. Ironically my repository [Automatic-CFG](https://github.com/Extraltodeus/ComfyUI-AutomaticCFG) is incompatible with these as it replaces what makes these nodes possible. Hence the auto-cfg node here :)
