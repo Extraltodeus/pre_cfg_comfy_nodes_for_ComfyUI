@@ -4,7 +4,7 @@ A set of nodes to prepare the noise predictions before the CFG function
 
 All can be **chained and repeated** within the same workflow!
 
-They should be highly compatible with most other nodes.
+They are to be highly compatible with most nodes.
 
 The order matters and depends on your needs.
 
