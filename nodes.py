@@ -1,6 +1,9 @@
 import torch
 from comfy.samplers import calc_cond_batch, encode_model_conds
 from comfy.sampler_helpers import convert_cond
+from nodes import ConditioningConcat
+from copy import deepcopy
+ConditioningConcat = ConditioningConcat()
 
 class pre_cfg_perp_neg:
     @classmethod
@@ -8,7 +11,8 @@ class pre_cfg_perp_neg:
         return {"required": {
                                 "model": ("MODEL",),
                                 "clip":  ("CLIP",),
-                                "neg_scale": ("FLOAT",   {"default": 1.0,  "min": 0.0, "max": 10.0,  "step": 1/10, "round": 0.01}),
+                                "neg_scale": ("FLOAT", {"default": 1.0,  "min": 0.0, "max": 10.0,  "step": 1/10, "round": 0.01}),
+                                "context_length": ("INT", {"default": 1,  "min": 1, "max": 100,  "step": 1}),
                               }
                               }
     RETURN_TYPES = ("MODEL",)
@@ -16,10 +20,15 @@ class pre_cfg_perp_neg:
 
     CATEGORY = "model_patches"
 
-    def patch(self, model, clip, neg_scale):
+    def patch(self, model, clip, neg_scale, context_length):
         empty_cond, pooled = clip.encode_from_tokens(clip.tokenize(""), return_pooled=True)
-        nocond = convert_cond([[empty_cond, {"pooled_output": pooled}]])
-        
+        nocond = [[empty_cond, {"pooled_output": pooled}]]
+        if context_length > 1:
+            short_nocond = deepcopy(nocond)
+            for x in range(context_length - 1):
+                (nocond,) = ConditioningConcat.concat(nocond, short_nocond)
+        nocond = convert_cond(nocond)
+
         @torch.no_grad()
         def pre_cfg_perp_neg_function(args):
             conds_out = args["conds_out"]
