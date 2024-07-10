@@ -74,6 +74,6 @@ A value higher than one will do the opposite and if pushed too far will most lik
 
 Did you know that my first activity is to write model merging functions?
 
-While the code is too much of a mess to be shared, I do expose my shared models on this [gallery](https://github.com/Extraltodeus/shared_models_galleries)!
+While the code is too much of a mess to be shared, I do expose and share my models. You can find them in this [gallery](https://github.com/Extraltodeus/shared_models_galleries)! 😁
 
 Also.. Ironically my repository [Automatic-CFG](https://github.com/Extraltodeus/ComfyUI-AutomaticCFG) is incompatible with these as it replaces what makes these nodes possible. Hence the auto-cfg node here :)
