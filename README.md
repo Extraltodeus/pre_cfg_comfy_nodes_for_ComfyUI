@@ -46,7 +46,7 @@ Applies the already known [perp-neg logic](https://perp-neg.github.io/).
 
 Code taken and adapted from ComfyAnon implementation.
 
-The context length can be set to a higher value if you are using a tensor rt engine requiring a higher context length.
+The context length (added after the screenshot of the node) can be set to a higher value if you are using a tensor rt engine requiring a higher context length.
 
 For more details you can check [my node related to this "Conditioning crop or fill"](https://github.com/Extraltodeus/Uncond-Zero-for-ComfyUI?tab=readme-ov-file#conditioning-crop-or-fill) where I explain a bit more about this.
 
