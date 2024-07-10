@@ -2,13 +2,13 @@
 
 A set of nodes to prepare the noise predictions before the CFG function
 
-All can be chained and should be highly compatible with most things.
+All can be **chained and repeated** within the same workflow!
+
+They should be highly compatible with most other nodes.
 
 The order matters and depends on your needs.
 
 The best chaining order is therefore to be determined by your own preferences.
-
-They can be used multiple times in the same workflow!
 
 All are to be used like any model patching node, right after the model loader.
 
