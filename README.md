@@ -69,3 +69,9 @@ A negative value can be set.
 A value lower than one will simplify the end result and enhance the saturation / contrasts.
 
 A value higher than one will do the opposite and if pushed too far will most likely make a mess.
+
+# Pro tip:
+
+Did you know that my first activity is to write model merging functions?
+
+While the code is too much of a mess to be shared, I do expose my shared models on this [gallery](https://github.com/Extraltodeus/shared_models_galleries)!
