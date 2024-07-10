@@ -72,7 +72,7 @@ A value higher than one will do the opposite and if pushed too far will most lik
 
 # Pro tip:
 
-Did you know that my first activity is to write model merging functions?
+Did you know that my first activity is to write creative model merging functions?
 
 While the code is too much of a mess to be shared, I do expose and share my models. You can find them in this [gallery](https://github.com/Extraltodeus/shared_models_galleries)! 😁
 
