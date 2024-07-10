@@ -46,6 +46,10 @@ Applies the already known [perp-neg logic](https://perp-neg.github.io/).
 
 Code taken and adapted from ComfyAnon implementation.
 
+The context length can be set to a higher value if you are using a tensor rt engine requiring a higher context length.
+
+For more details you can check [my node related to this "Conditioning crop or fill"](https://github.com/Extraltodeus/Uncond-Zero-for-ComfyUI?tab=readme-ov-file#conditioning-crop-or-fill) where I explain a bit more about this.
+
 ## Pre CFG sharpening (experimental)
 
 ![image](https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI/assets/15731540/ffca8fae-34b0-44fa-bcd5-dc2ed2c625ca)
