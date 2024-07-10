@@ -36,6 +36,8 @@ The only issue if you do this is that the CFG function will weight your positive
 
 Doing this combination is similar to the "boost" feature of my original automatic CFG node. It can also let you avoid artifacts if you want to use the strict scaling.
 
+If you want to use this option in a chained setup using this node multiple times I recommand to use it only once and on the last.
+
 ## Pre CFG perp-neg
 
 ![image](https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI/assets/15731540/606b2ff3-fb81-4964-8e6d-cee97011a623)
