@@ -1,3 +1,5 @@
+quick note: I intend to post a few workflows sooooon
+
 # Pre CFG nodes
 
 A set of nodes to prepare the noise predictions before the CFG function
