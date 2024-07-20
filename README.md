@@ -1,4 +1,6 @@
-quick note: This is still a work in progress and some things may change
+quick note: This is still a work in progress and some things may change.
+
+The readme is not up to date and there is more than this.
 
 # Pre CFG nodes
 
