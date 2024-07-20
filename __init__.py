@@ -18,7 +18,7 @@ NODE_CLASS_MAPPINGS = {
     "Support empty uncond": support_empty_uncond_pre_cfg_node,
     "Shape attention": ShapeAttentionNode,
     "Post CFG subtract mean": PostCFGsubtractMeanNode,
-    "Post CFG make a dot": PostCFGDotNode,
+    # "Post CFG make a dot": PostCFGDotNode,
     "Individual channel selector": individual_channel_selection_node,
     
 }
