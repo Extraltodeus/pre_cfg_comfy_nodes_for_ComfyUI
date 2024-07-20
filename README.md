@@ -1,4 +1,4 @@
-quick note: I intend to post a few workflows sooooon
+quick note: I intend to post a few workflows soon / this is still a work in progress
 
 # Pre CFG nodes
 
