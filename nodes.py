@@ -191,11 +191,11 @@ def topk_average(latent, top_k=0.25, measure="average"):
     return value_range
 
 apply_scaling_methods = {
-    "individual": lambda c, m, b: c * torch.tensor(m).view(c.shape[0],1,1).to(c.device),
-    "all_as_one": lambda c, m, b: c * m[0],
-    "average" :   lambda c, m, b: c * (sum(m) / len(m)),
-    "smallest":   lambda c, m, b: c * min(m),
-    "biggest" :   lambda c, m, b: c * max(m),
+    "individual": lambda c, m: c * torch.tensor(m).view(c.shape[0],1,1).to(c.device) * 1.25,
+    "all_as_one": lambda c, m: c * m[0],
+    "average" :   lambda c, m: c * (sum(m) / len(m)),
+    "smallest":   lambda c, m: c * min(m),
+    "biggest" :   lambda c, m: c * max(m),
 }
 
 measuring_methods = {
@@ -258,8 +258,8 @@ class automatic_pre_cfg:
                         new_scale = 1 / max(mes,0.01)
                         chans.append(new_scale)
 
-                conds_out[0][b] = apply_scaling_methods[scaling_method](conds_out[0][b],chans,channels)
-                conds_out[1][b] = apply_scaling_methods[scaling_method](conds_out[1][b],chans,channels)
+                conds_out[0][b] = apply_scaling_methods[scaling_method](conds_out[0][b],chans)
+                conds_out[1][b] = apply_scaling_methods[scaling_method](conds_out[1][b],chans)
 
             return conds_out
 
