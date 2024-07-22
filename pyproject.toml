@@ -9,6 +9,6 @@ Repository = "https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "extraltodeus"
 DisplayName = "pre_cfg_comfy_nodes_for_ComfyUI"
 Icon = ""
