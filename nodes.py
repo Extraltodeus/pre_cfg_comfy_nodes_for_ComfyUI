@@ -1081,26 +1081,6 @@ def generate_gradient_mask(tensor, horizontal=False):
         merging_gradient = gradient.unsqueeze(1).repeat(tensor.size(0), tensor.size(1), 1, tensor.size(3))
     return merging_gradient
 
-@torch.no_grad()
-def random_swap(tensors, proportion=1):
-    # torch.manual_seed(seed)
-    num_tensors = tensors.shape[0]
-    tensor_size = tensors[0].numel()
-
-    true_count = int(tensor_size * proportion)
-    mask = torch.cat((torch.ones(true_count, dtype=torch.bool, device=tensors[0].device), 
-                      torch.zeros(tensor_size - true_count, dtype=torch.bool, device=tensors[0].device)))
-    mask = mask[torch.randperm(tensor_size)].reshape(tensors[0].shape)
-    if num_tensors == 2 and proportion < 1:
-        index_tensor = torch.ones_like(tensors[0], dtype=torch.int64, device=tensors[0].device)
-    else:
-        index_tensor = torch.randint(1 if proportion < 1 else 0, num_tensors, tensors[0].shape, device=tensors[0].device)
-    for i, t in enumerate(tensors):
-        if i == 0: continue
-        merge_mask = index_tensor == i & mask
-        tensors[0][merge_mask] = t[merge_mask]
-    return tensors[0],true_count
-
 class gradient_scaling_pre_cfg_node:
     @classmethod
     def INPUT_TYPES(s):
