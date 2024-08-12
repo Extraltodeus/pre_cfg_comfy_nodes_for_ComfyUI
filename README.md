@@ -77,6 +77,7 @@ Here, an example using a black and red spiral, since the base description is abo
 Note:
 
 - Given that this is a non-ml solution, unlike controlnet, it can not tell the difference in between a banana and a person. It simply tries to make the values match the input image. A giraffe is just an apple with different values at a different place.
+- It is possible to chain multiple times this node for as long as the sum of all the strength sliders is equal or below one.
 
 ## Pre CFG automatic scale
 
