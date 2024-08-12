@@ -52,7 +52,13 @@ Pattern matching, here with a black and white spiral:
 
 ![00347UI_00001_](https://github.com/user-attachments/assets/3b030e29-ba5b-4841-bbe7-eb5ae59d652c)
 
-Text is a bit harder to enforce:
+A blue one with a lower scale:
+
+![00297UI_00001_](https://github.com/user-attachments/assets/bc271aa5-93d3-4438-8600-20ae05d47df3)
+
+As you can notice the details a pretty well done in general. It seems that using an input latent as a guide also helps with the overall quality. Using a "freshly" encoded latent, I haven't tried to loop back a latent space resulting from sampling directly.
+
+Text is a bit harder to enforce and may require more tweaking with the scales:
 
 ![00133UI_00001_](https://github.com/user-attachments/assets/9c8f1ae3-0411-401f-a6e8-3b4451479576)
 
