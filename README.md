@@ -4,6 +4,13 @@ The readme is not up to date and there is more than this.
 
 The node named "Pre CFG gradient scaling" can do some similar stuff to controlnet without inferences.
 
+
+![ComfyUI_00088_](https://github.com/user-attachments/assets/b8d01b1f-5a42-4dc9-9082-ee92b1f77665)
+
+
+![ComfyUI_00108_](https://github.com/user-attachments/assets/866b871a-1412-496c-9d36-db8e5d2703bc)
+
+
 # Pre CFG nodes
 
 A set of nodes to prepare the noise predictions before the CFG function
