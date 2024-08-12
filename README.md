@@ -16,9 +16,11 @@ All are to be used like any model patching node, right after the model loader.
 
 # Nodes:
 
-## Gradient scaling
+## Gradient scaling:
 
 Named like this because I initially wanted to test what would happen if I used, instead of a single CFG scale, a tensor shaped like the latent space with a gradual variation. Then why not try to use masks instead? And what if I could make it so each value will participate so the image would match as close as possible to an input image?
+
+The result is an arithmetic scaling method which does not noticeably slow down the sampling while also scaling the intensity of the values during the sampling.
 
 So here it is:
 
@@ -33,6 +35,42 @@ So, simply put:
 - Converging scales: make the min and max scales join your sampler scale as the sampling goes. This can weaken the pattern matching effect if you are aiming for something precise but otherwise greatly enhance the final result also allow the use of a bigger maximum scale.
 - invert mask: for convenience
 
+### Potential uses:
+
+General light direction/composition influence (all same seed):
+
+![combined_image](https://github.com/user-attachments/assets/647589b4-cea2-41c9-804f-fc59b7ba1b71)
+
+Vignetting:
+
+![combined_v_images](https://github.com/user-attachments/assets/fd492fad-634f-43ce-9d48-918bc56103a9)
+
+Color influence:
+
+![combined_rgb_image](https://github.com/user-attachments/assets/0e71e294-0d5f-4ab8-89ca-1012bc2528df)
+
+Pattern matching, here with a black and white spiral:
+
+![00347UI_00001_](https://github.com/user-attachments/assets/3b030e29-ba5b-4841-bbe7-eb5ae59d652c)
+
+Text is a bit harder to enforce:
+
+![00133UI_00001_](https://github.com/user-attachments/assets/9c8f1ae3-0411-401f-a6e8-3b4451479576)
+
+
+Since it takes advantage of the "wiggling room" left by the CFG scale so to make the generation match an image, it can hardly contradict what is being generated.
+
+Here, an example using a red spiral, since the base description is about black and white I could only enforce the red by using destructive scales:
+
+![combined_side_by_side_image](https://github.com/user-attachments/assets/f0a85a4b-4ad3-4d20-8248-6d1e81bdddc9)
+
+### Side use:
+
+- If only using a mask for the input, will apply the selected maximum scale to the target area.
+
+Note:
+
+- Given that this is a non-ml solution, unlike controlnet, it can not tell the difference in between a banana and a person. It simply tries to make the values match the input image. A giraffe is just an apple with different values at a different place.
 
 ## Pre CFG automatic scale
 
