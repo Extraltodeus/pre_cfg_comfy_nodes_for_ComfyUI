@@ -10,9 +10,7 @@ from nodes import ConditioningConcat, ConditioningSetTimestepRange
 import comfy.model_management as model_management
 from comfy.latent_formats import SDXL as SDXL_Latent
 import os
-from comfy.taesd import taesd as taesd_class
 
-taesd = taesd_class.TAESD()
 current_dir = os.path.dirname(os.path.realpath(__file__))
 SDXL_Latent = SDXL_Latent()
 sdxl_latent_rgb_factors = SDXL_Latent.latent_rgb_factors
