@@ -64,16 +64,6 @@ Subtract from the current step something from the previous step. This tends to m
 
 A negative value can be set.
 
-## Pre CFG consensus sharpening (experimental)
-
-![image](https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI/assets/15731540/af313fe0-f4d5-42dc-ac1c-07c1b84ef96c)
-
-Using a custom algorithm based on euclidean distances, taking all steps into consideration.
-
-Subtract from the current step something from the result of the custom function. This tends to make the images sharper and less saturated too.
-
-A negative value can be set.
-
 ## Pre CFG exponentiation (experimental)
 
 ![image](https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI/assets/15731540/34367216-eccf-411e-8fab-c63ff0f24331)
