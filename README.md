@@ -65,7 +65,7 @@ Text is a bit harder to enforce and may require more tweaking with the scales:
 
 Since it takes advantage of the "wiggling room" left by the CFG scale so to make the generation match an image, it can hardly contradict what is being generated.
 
-Here, an example using a red spiral, since the base description is about black and white I could only enforce the red by using destructive scales:
+Here, an example using a black and red spiral, since the base description is about black and white I could only enforce the red by using destructive scales:
 
 ![combined_side_by_side_image](https://github.com/user-attachments/assets/f0a85a4b-4ad3-4d20-8248-6d1e81bdddc9)
 
