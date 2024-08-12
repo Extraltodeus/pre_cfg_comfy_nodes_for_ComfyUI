@@ -72,6 +72,7 @@ Here, an example using a red spiral, since the base description is about black a
 ### Side use:
 
 - If only using a mask for the input, will apply the selected maximum scale to the target area.
+- I added two image generators. One simply using RGB sliders and a gradient generator which can also make circular patterns while outputting a mask, to make vignetting easy.
 
 Note:
 
