@@ -2,9 +2,11 @@ quick note: This is still a work in progress and ~some~ a lot of things may chan
 
 The readme is not up to date and there is more than this.
 
-The node named "Pre CFG gradient scaling" can do some stuff like influencing the result without inferences. I'll share better settings than this but so you can see text/spiral:
+The node named "Pre CFG gradient scaling" can do some stuff like influencing the result without inferences. I'll share better settings than this but so you can see text/rainbow/spiral:
 
 ![ComfyUI_00540_](https://github.com/user-attachments/assets/6b6994c2-9f78-4dad-b912-5fe61e27c789)
+
+![ComfyUI_00628_](https://github.com/user-attachments/assets/c70eeaa8-88dc-4eb8-b09a-1e2b7355fab0)
 
 
 ![ComfyUI_00108_](https://github.com/user-attachments/assets/866b871a-1412-496c-9d36-db8e5d2703bc)
