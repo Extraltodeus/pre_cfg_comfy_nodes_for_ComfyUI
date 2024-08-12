@@ -1,12 +1,4 @@
-quick note: This is still a work in progress and ~some~ a lot of things may change.
-
-The readme is not up to date and there is more than this.
-
-The node named "Pre CFG gradient scaling" can do some stuff like influencing the result without inferences. I'll share better settings than this but so you can see rainbow/spiral:
-
-![ComfyUI_00628_](https://github.com/user-attachments/assets/f5fa4297-0a07-4a9e-8548-5acde0f34ab4)
-
-![ComfyUI_00634_](https://github.com/user-attachments/assets/445c025a-61db-4770-bf22-841869eeca48)
+WIP
 
 # Pre CFG nodes
 
@@ -23,6 +15,24 @@ The best chaining order is therefore to be determined by your own preferences.
 All are to be used like any model patching node, right after the model loader.
 
 # Nodes:
+
+## Gradient scaling
+
+Named like this because I initially wanted to test what would happen if I used, instead of a single CFG scale, a tensor shaped like the latent space with a gradual variation. Then why not try to use masks instead? And what if I could make it so each value will participate so the image would match as close as possible to an input image?
+
+So here it is:
+
+![image](https://github.com/user-attachments/assets/86e52c18-d85b-47cc-aee7-cf8750e50bb2)
+
+So, simply put:
+
+- Maximum scale: Which max CFG scale can be used to try to match the input? You can go as high as 500 and still get an output. At 1000 you should stop before the end.
+- Minimum scale: Same of course but this one I find better to let in between 3.5 and 5.
+- Strength: An overall multiplier for the effect. Generally left at 1 but if you use a plain color image and feel like your results are too smooth you may want to lower it.
+- end at sigma: You can go down to the end of the sampling if using the next described toggle but in general I prefer to stop at 0.28. Stopping before the end will give better result with super high scales. 0.28 is the default value.
+- Converging scales: make the min and max scales join your sampler scale as the sampling goes. This can weaken the pattern matching effect if you are aiming for something precise but otherwise greatly enhance the final result also allow the use of a bigger maximum scale.
+- invert mask: for convenience
+
 
 ## Pre CFG automatic scale
 
@@ -76,10 +86,3 @@ A value lower than one will simplify the end result and enhance the saturation /
 
 A value higher than one will do the opposite and if pushed too far will most likely make a mess.
 
-# Pro tip:
-
-Did you know that my first activity is to write creative model merging functions?
-
-While the code is too much of a mess to be shared, I do expose and share my models. You can find them in this [gallery](https://github.com/Extraltodeus/shared_models_galleries)! 😁
-
-Also.. Ironically my repository [Automatic-CFG](https://github.com/Extraltodeus/ComfyUI-AutomaticCFG) is incompatible with these as it replaces what makes these nodes possible. Hence the auto-cfg node here :)
