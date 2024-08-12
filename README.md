@@ -4,7 +4,7 @@ The readme is not up to date and there is more than this.
 
 The node named "Pre CFG gradient scaling" can do some stuff like influencing the result without inferences. I'll share better settings than this but so you can see text/rainbow/spiral:
 
-![ComfyUI_00540_](https://github.com/user-attachments/assets/6b6994c2-9f78-4dad-b912-5fe61e27c789)
+![ComfyUI_00552_](https://github.com/user-attachments/assets/d28f2e10-d152-48b3-8aa3-a92d7188d49a)
 
 ![ComfyUI_00628_](https://github.com/user-attachments/assets/f5fa4297-0a07-4a9e-8548-5acde0f34ab4)
 
