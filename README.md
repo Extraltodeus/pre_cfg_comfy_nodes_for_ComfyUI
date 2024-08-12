@@ -6,8 +6,7 @@ The node named "Pre CFG gradient scaling" can do some stuff like influencing the
 
 ![ComfyUI_00540_](https://github.com/user-attachments/assets/6b6994c2-9f78-4dad-b912-5fe61e27c789)
 
-![ComfyUI_00628_](https://github.com/user-attachments/assets/c70eeaa8-88dc-4eb8-b09a-1e2b7355fab0)
-
+![ComfyUI_00628_](https://github.com/user-attachments/assets/f5fa4297-0a07-4a9e-8548-5acde0f34ab4)
 
 ![ComfyUI_00108_](https://github.com/user-attachments/assets/866b871a-1412-496c-9d36-db8e5d2703bc)
 
