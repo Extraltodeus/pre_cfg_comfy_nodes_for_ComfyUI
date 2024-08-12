@@ -2,7 +2,7 @@ quick note: This is still a work in progress and ~some~ a lot of things may chan
 
 The readme is not up to date and there is more than this.
 
-The node named "Pre CFG gradient scaling" can do some similar stuff to controlnet without inferences. I'll share better settings than this but so you can see text/spiral:
+The node named "Pre CFG gradient scaling" can do some stuff like influencing the result without inferences. I'll share better settings than this but so you can see text/spiral:
 
 
 ![ComfyUI_00088_](https://github.com/user-attachments/assets/b8d01b1f-5a42-4dc9-9082-ee92b1f77665)
