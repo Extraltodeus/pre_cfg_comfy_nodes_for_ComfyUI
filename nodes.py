@@ -1081,6 +1081,26 @@ def generate_gradient_mask(tensor, horizontal=False):
         merging_gradient = gradient.unsqueeze(1).repeat(tensor.size(0), tensor.size(1), 1, tensor.size(3))
     return merging_gradient
 
+@torch.no_grad()
+def random_swap(tensors, proportion=1):
+    # torch.manual_seed(seed)
+    num_tensors = tensors.shape[0]
+    tensor_size = tensors[0].numel()
+
+    true_count = int(tensor_size * proportion)
+    mask = torch.cat((torch.ones(true_count, dtype=torch.bool, device=tensors[0].device), 
+                      torch.zeros(tensor_size - true_count, dtype=torch.bool, device=tensors[0].device)))
+    mask = mask[torch.randperm(tensor_size)].reshape(tensors[0].shape)
+    if num_tensors == 2 and proportion < 1:
+        index_tensor = torch.ones_like(tensors[0], dtype=torch.int64, device=tensors[0].device)
+    else:
+        index_tensor = torch.randint(1 if proportion < 1 else 0, num_tensors, tensors[0].shape, device=tensors[0].device)
+    for i, t in enumerate(tensors):
+        if i == 0: continue
+        merge_mask = index_tensor == i & mask
+        tensors[0][merge_mask] = t[merge_mask]
+    return tensors[0],true_count
+
 class gradient_scaling_pre_cfg_node:
     @classmethod
     def INPUT_TYPES(s):
@@ -1133,13 +1153,14 @@ class gradient_scaling_pre_cfg_node:
         return torch.clamp(low_diff / high_diff, min=0, max=1)
 
     def patch(self, model, maximum_scale, minimum_scale, invert_mask, strength, end_at_sigma, noise_add_diff=True, converging_scales=False, split_channels=False, free_scale=False, input_mask=None, input_latent=None):
-        if input_mask is None and input_latent is None:
-            return (model,)
+        # if input_mask is None and input_latent is None:
+        #     return (model,)
         sigma_min, sigma_max = get_sigma_min_max(model)
         model_sampling = model.model.model_sampling
         scaling_function = self.get_latent_guidance_mask_channel if split_channels else self.get_latent_guidance_mask
         mask_as_weight = None
         latent_as_guidance = None
+        random_guidance = False
         if input_mask is not None:
             mask_as_weight = input_mask.clone().to(device=default_device)
             if invert_mask:
@@ -1148,6 +1169,8 @@ class gradient_scaling_pre_cfg_node:
                 mask_as_weight = mask_as_weight.unsqueeze(1)
         if input_latent is not None:
             latent_as_guidance = input_latent["samples"].clone().to(device=default_device)
+        elif input_mask is None:
+            random_guidance = True
 
         @torch.no_grad()
         def pre_cfg_patch(args):
@@ -1170,6 +1193,9 @@ class gradient_scaling_pre_cfg_node:
 
             if mask_as_weight is not None and mask_as_weight.shape[-2:] != conds_out[1].shape[-2:]:
                 mask_as_weight = F.interpolate(mask_as_weight, size=(conds_out[1].shape[-2], conds_out[1].shape[-1]), mode='bilinear', align_corners=False)
+            
+            if random_guidance:
+                latent_as_guidance = torch.randn_like(conds_out[0],device=conds_out[0].device) * 5
 
             if latent_as_guidance is not None:
                 if latent_as_guidance.shape[-2:] != conds_out[1].shape[-2:]:
