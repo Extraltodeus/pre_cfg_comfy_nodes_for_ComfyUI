@@ -1,6 +1,8 @@
-quick note: This is still a work in progress and some things may change.
+quick note: This is still a work in progress and ~some~ a lot of things may change.
 
 The readme is not up to date and there is more than this.
+
+The node named "Pre CFG gradient scaling" can do some similar stuff to controlnet without inferences.
 
 # Pre CFG nodes
 
