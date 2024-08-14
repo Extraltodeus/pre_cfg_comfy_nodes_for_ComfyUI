@@ -30,6 +30,20 @@ def get_sigma_min_max(model):
     sigma_max = model_sampling.sigma(model_sampling.timestep(model_sampling.sigma_max)).item()
     return sigma_min, sigma_max
 
+@torch.no_grad()
+def make_new_uncond_at_scale(cond,uncond,cond_scale,new_scale):
+    new_scale_ratio = (new_scale - 1) / (cond_scale - 1)
+    return cond * (1 - new_scale_ratio) + uncond * new_scale_ratio
+
+@torch.no_grad()
+def make_new_uncond_at_scale_co(conds_out,cond_scale,new_scale):
+    new_scale_ratio = (new_scale - 1) / (cond_scale - 1)
+    return conds_out[0] * (1 - new_scale_ratio) + conds_out[1] * new_scale_ratio
+
+@torch.no_grad()
+def get_denoised_at_scale(x_orig,cond,uncond,cond_scale):
+    return x_orig - ((x_orig - uncond) + cond_scale * ((x_orig - cond) - (x_orig - uncond)))
+
 class pre_cfg_perp_neg:
     @classmethod
     def INPUT_TYPES(s):
@@ -1085,8 +1099,8 @@ class gradient_scaling_pre_cfg_node:
     @classmethod
     def INPUT_TYPES(s):
         return {"required": {"model": ("MODEL",),
-                             "maximum_scale": ("FLOAT", {"default": 80,  "min": 3.0, "max": 1000.0, "step": 1, "round": 1/100, "tooltip":"It is an equivalent to the CFG scale."}),
-                             "minimum_scale": ("FLOAT", {"default": 4.5, "min": 1.0, "max": 10.0,   "step": 1/2, "round": 1/100, "tooltip":"It is an equivalent to the CFG scale."}),
+                             "maximum_scale": ("FLOAT", {"default": 80,  "min": 0.0, "max": 1000.0, "step": 1, "round": 1/100, "tooltip":"It is an equivalent to the CFG scale."}),
+                             "minimum_scale": ("FLOAT", {"default": 4.5, "min": 0.0, "max": 10.0,   "step": 1/2, "round": 1/100, "tooltip":"It is an equivalent to the CFG scale."}),
                              "strength": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 10.0, "step": 1/10, "round": 1/10}),
                              "end_at_sigma": ("FLOAT", {"default": 0.28,  "min": 0.0,  "max": 1000.0, "step": 1/100, "round": 1/100}),
                             #  "free_scale" : ("BOOLEAN", {"default": False}),
@@ -1094,6 +1108,9 @@ class gradient_scaling_pre_cfg_node:
                             #  "noise_add_diff" : ("BOOLEAN", {"default": True}),
                             #  "split_channels" : ("BOOLEAN", {"default": False}),
                              "invert_mask" : ("BOOLEAN", {"default": False}),
+                            #  "no_input" : (["rand","rev","cond","uncond","swap","r_swap","diff","add_diff","rand_rev","rev_cond","rand_cond","rev_cond_sp","cond_rev_sp"],),
+                            #  "start_at_sigma": ("FLOAT", {"default": 15,  "min": 0.0,  "max": 1000.0, "step": 1/100, "round": 1/100}),
+                            #  "end_at_sigma": ("FLOAT", {"default": 0.28,  "min": 0.0,  "max": 1000.0, "step": 1/100, "round": 1/100}),
                              },
                              "optional":{
                                  "input_mask": ("MASK", {"tooltip":"If only a mask is connected the scale becomes a CFG scale of what is being masked.\nWhen a latent is connected the mask defines what will be modified by the node."},),
@@ -1105,15 +1122,6 @@ class gradient_scaling_pre_cfg_node:
 
     CATEGORY = "model_patches/Pre CFG"
 
-    @torch.no_grad()
-    def make_new_uncond_at_scale(self,cond,uncond,cond_scale,new_scale):
-        new_scale_ratio = (new_scale - 1) / (cond_scale - 1)
-        return cond * (1 - new_scale_ratio) + uncond * new_scale_ratio
-
-    @torch.no_grad()
-    def get_denoised_at_scale(self,x_orig,cond,uncond,cond_scale):
-        return x_orig - ((x_orig - uncond) + cond_scale * ((x_orig - cond) - (x_orig - uncond)))
-
     def get_latent_guidance_mask_channel(self,x_orig,cond,uncond,guide,minimum_scale,maximum_scale,noise_add_diff):
         scales = torch.zeros_like(x_orig, device=x_orig.device)
         for b in range(cond.shape[0]):
@@ -1123,8 +1131,8 @@ class gradient_scaling_pre_cfg_node:
 
     @torch.no_grad()
     def get_latent_guidance_mask(self,x_orig,cond,uncond,guide,minimum_scale,maximum_scale,noise_add_diff):
-        low_denoised  = self.get_denoised_at_scale(x_orig,cond,uncond,minimum_scale)
-        high_denoised = self.get_denoised_at_scale(x_orig,cond,uncond,maximum_scale)
+        low_denoised  = get_denoised_at_scale(x_orig,cond,uncond,minimum_scale)
+        high_denoised = get_denoised_at_scale(x_orig,cond,uncond,maximum_scale)
         if noise_add_diff:
             guide = guide + (guide - (x_orig * guide.norm() / x_orig.norm()))
         guide = guide / guide.norm()
@@ -1132,9 +1140,7 @@ class gradient_scaling_pre_cfg_node:
         high_diff = (high_denoised - guide * high_denoised.norm()).abs()
         return torch.clamp(low_diff / high_diff, min=0, max=1)
 
-    def patch(self, model, maximum_scale, minimum_scale, invert_mask, strength, end_at_sigma, noise_add_diff=True, converging_scales=False, split_channels=False, free_scale=False, input_mask=None, input_latent=None):
-        # if input_mask is None and input_latent is None:
-        #     return (model,)
+    def patch(self, model, maximum_scale, minimum_scale, invert_mask, strength, end_at_sigma, start_at_sigma=99999, no_input="swap", noise_add_diff=True, converging_scales=False, split_channels=False, free_scale=False, input_mask=None, input_latent=None):
         sigma_min, sigma_max = get_sigma_min_max(model)
         model_sampling = model.model.model_sampling
         scaling_function = self.get_latent_guidance_mask_channel if split_channels else self.get_latent_guidance_mask
@@ -1152,6 +1158,24 @@ class gradient_scaling_pre_cfg_node:
         elif input_mask is None:
             random_guidance = True
 
+        snc = lambda x: x / x.norm()
+        trl = lambda x: torch.randn_like(x,device=x.device)
+        no_input_operations = {
+            "rand": lambda x, y, o, z, s: snc(trl(x)) * x.norm(),
+            "rev": lambda x, y, o, z, s: x * -1,
+            "cond": lambda x, y, o, z, s: snc(y) * x.norm(),
+            "uncond": lambda x, y, o, z, s: snc(o) * x.norm() * -1,
+            "swap": lambda x, y, o, z, s: no_input_operations["cond"](x, y, o, z, s) if s > 0.36 else no_input_operations["uncond"](x, y, o, z, s),
+            "r_swap": lambda x, y, o, z, s: no_input_operations["cond"](x, y, o, z, s) if s <= 0.36 else no_input_operations["uncond"](x, y, o, z, s),
+            "diff": lambda x, y, o, z, s: snc(y - o) * x.norm(),
+            "add_diff": lambda x, y, o, z, s: snc(y + y - o) * x.norm(),
+            "rand_rev": lambda x, y, o, z, s: snc(trl(x)) * x.norm(),
+            "rev_cond": lambda x, y, o, z, s: (snc(x) * -1 + snc(y) * 0.5) * x.norm() / 1.5,
+            "rand_cond": lambda x, y, o, z, s: (snc(x) * -1 + snc(trl(x)) * 0.5) * x.norm() / 1.5,
+            "rev_cond_sp": lambda x, y, o, z, s: no_input_operations["rev"](x,y,z) * z + (1 - z) * no_input_operations["cond"](x,y,z),
+            "cond_rev_sp": lambda x, y, o, z, s: no_input_operations["rev"](x,y,z) * (1 - z) + z * no_input_operations["cond"](x,y,z),
+        }
+
         @torch.no_grad()
         def pre_cfg_patch(args):
             nonlocal mask_as_weight, latent_as_guidance
@@ -1161,7 +1185,7 @@ class gradient_scaling_pre_cfg_node:
             sigma  = args["sigma"][0]
             sp = min(1,max(0,sigma_to_percent(model_sampling, sigma - sigma_min * 3) + 1 / 100)) ** 2
 
-            if not torch.any(conds_out[1]) or sigma <= end_at_sigma or (converging_scales and sp == 1):
+            if not torch.any(conds_out[1]) or sigma <= end_at_sigma or sigma > start_at_sigma or (converging_scales and sp == 1):
                 return conds_out
 
             if converging_scales:
@@ -1175,7 +1199,7 @@ class gradient_scaling_pre_cfg_node:
                 mask_as_weight = F.interpolate(mask_as_weight, size=(conds_out[1].shape[-2], conds_out[1].shape[-1]), mode='bilinear', align_corners=False)
             
             if random_guidance:
-                latent_as_guidance = torch.randn_like(conds_out[0],device=conds_out[0].device) * 5
+                latent_as_guidance = no_input_operations[no_input](x_orig.clone(),conds_out[0].clone(),conds_out[1].clone(),sp,sigma/sigma_max)
 
             if latent_as_guidance is not None:
                 if latent_as_guidance.shape[-2:] != conds_out[1].shape[-2:]:
@@ -1193,11 +1217,11 @@ class gradient_scaling_pre_cfg_node:
                     global_multiplier = global_multiplier * mask_as_weight
 
                 target_scales = target_scales * global_multiplier + torch.full_like(target_scales, cond_scale) * (1 - global_multiplier)
-                conds_out[1] = self.make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,target_scales)
+                conds_out[1] = make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,target_scales)
                 return conds_out
             else:
                 target_scales = maximum_scale * mask_as_weight * strength + torch.full_like(conds_out[1], cond_scale) * (1 - mask_as_weight * strength)
-                conds_out[1] = self.make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,maximum_scale)
+                conds_out[1]  = make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,maximum_scale)
                 return conds_out
 
         m = model.clone()
