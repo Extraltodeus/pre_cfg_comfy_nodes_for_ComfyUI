@@ -72,7 +72,7 @@ Here, an example using a black and red spiral, since the base description is abo
 ### Side use:
 
 - If only using a mask for the input, will apply the selected maximum scale to the target area.
-- If nothing is connected: will use random noise as guide.
+- If nothing is connected: will use the positive prediction as guide for 74% of the sigma and the negative for the last part.
 
 Note:
 
