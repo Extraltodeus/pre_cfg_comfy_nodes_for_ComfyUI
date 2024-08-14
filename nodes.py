@@ -1221,7 +1221,7 @@ class gradient_scaling_pre_cfg_node:
                 return conds_out
             else:
                 target_scales = maximum_scale * mask_as_weight * strength + torch.full_like(conds_out[1], cond_scale) * (1 - mask_as_weight * strength)
-                conds_out[1]  = make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,maximum_scale)
+                conds_out[1]  = make_new_uncond_at_scale(conds_out[0],conds_out[1],cond_scale,target_scales)
                 return conds_out
 
         m = model.clone()
