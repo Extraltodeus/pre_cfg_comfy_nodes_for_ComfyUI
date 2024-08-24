@@ -17,7 +17,7 @@ All are to be used like any model patching node, right after the model loader.
 
 ## Gradient scaling:
 
-Named like this because I initially wanted to test what would happen if I used, instead of a single CFG scale, a tensor shaped like the latent space with a gradual variation. Then why not try to use masks instead? And what if I could make it so each value will participate so the image would match as close as possible to an input image?
+Named like this because I initially wanted to test what would happen if I used, instead of a single CFG scale, a tensor shaped like the latent space with a gradual variation. So, not the kind of gradient used for backpropagation. Then why not try to use masks instead? And what if I could make it so each value will participate so the image would match as close as possible to an input image?
 
 The result is an arithmetic scaling method which does not noticeably slow down the sampling while also scaling the intensity of the values like an "automatic cfg".
 
