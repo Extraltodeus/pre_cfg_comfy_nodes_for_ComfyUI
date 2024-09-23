@@ -22,7 +22,7 @@ There are now too many nodes for me to just add a screenshot and a bunch of deta
 - Perturbed attention guidance: adaptation of PAG as a pre-CFG node.
 - Variable CFG: Make you scale vary along the generation
 - channel multipliers
-- subtract mean
+- subtract prediction mean: gives more balanced colors
 - "flip flop": swap the positive with the negative. Since the order matter, you may chain it with other nodes and go back to the correct order after. For experimental purposes.
 - Shape attention (for SDXL) can turn off the input layer 8.
 - Support empty uncond: Combined with "menu>advanced>conditioning>set timestep range" at ~65% you can now get a speed boost on any workflow.
