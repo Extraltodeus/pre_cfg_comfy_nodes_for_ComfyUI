@@ -27,6 +27,7 @@ There are now too many nodes for me to just add a screenshot and a bunch of deta
 - Shape attention (for SDXL) can turn off the input layer 8.
 - Support empty uncond: Combined with "menu>advanced>conditioning>set timestep range" at ~65% you can now get a speed boost on any workflow.
 - Set timestep range from sigmas: same as the default node except that you're using sigmas instead of step percentage
+- [The testing branch](https://github.com/Extraltodeus/pre_cfg_comfy_nodes_for_ComfyUI/tree/testing_wip) has a few more and is the current state of these nodes for me.
 
 
 ## Pre CFG automatic scale
