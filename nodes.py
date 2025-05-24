@@ -323,7 +323,7 @@ class automatic_pre_cfg:
     def patch(self, model, scaling_method, min_max_method="difference", reference_CFG=8, scale_multiplier=0.8, top_k=0.25, channels_selection=None):
         parameters_string = f"scaling_method: {scaling_method}\nmin_max_method: {min_max_method}"
         if channels_selection is not None:
-            for x in range(channels_selection):
+            for x in range(len(channels_selection)):
                 parameters_string += f"\nchannel {x+1}: {channels_selection[x]}"
         scaling_methods_names = [k for k in apply_scaling_methods]
         @torch.no_grad()
